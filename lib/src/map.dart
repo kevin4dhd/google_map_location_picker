@@ -11,12 +11,16 @@ import 'package:google_map_location_picker/generated/l10n.dart';
 import 'package:google_map_location_picker/src/providers/location_provider.dart';
 import 'package:google_map_location_picker/src/utils/loading_builder.dart';
 import 'package:google_map_location_picker/src/utils/log.dart';
+import 'package:google_map_location_picker/src/widgets/button_rounded.dart';
+import 'package:google_map_location_picker/src/widgets/header_bottom_rounded.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'model/location_result.dart';
+import 'utils/global.dart';
 import 'utils/location_utils.dart';
+import 'widgets/horizontal_expanded_child.dart';
 
 class MapPicker extends StatefulWidget {
   const MapPicker(
@@ -153,13 +157,42 @@ class MapPickerState extends State<MapPicker> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return buildMap();
+          return buildMap(context);
         },
       ),
     );
   }
 
-  Widget buildMap() {
+  Widget buildMap(BuildContext context) {
+    var _header = HeaderBottomRounded(
+        child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 54),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.arrow_back,
+              size: 28,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            width: 45,
+          ),
+          Text(
+            'Mapa de ubicación',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 21,
+              fontFamily: 'UbuntuMedium',
+            ),
+          )
+        ],
+      ),
+    ));
     return Center(
       child: Stack(
         children: <Widget>[
@@ -205,6 +238,7 @@ class MapPickerState extends State<MapPicker> {
           ),
           pin(),
           locationCard(),
+          Positioned(child: _header),
         ],
       ),
     );
@@ -221,45 +255,70 @@ class MapPickerState extends State<MapPicker> {
               builder: (context, locationProvider, _) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(
-                    flex: 20,
-                    child: FutureLoadingBuilder<Map<String, String>>(
-                      future: getAddress(locationProvider.lastIdleLocation),
-                      mutable: true,
-                      loadingIndicator: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircularProgressIndicator(),
-                        ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 20,
+                        child: FutureLoadingBuilder<Map<String, String>>(
+                          future: getAddress(locationProvider.lastIdleLocation),
+                          mutable: true,
+                          loadingIndicator: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              CircularProgressIndicator(),
+                            ],
+                          ),
+                          builder: (context, data) {
+                            _address = data["address"];
+                            _placeId = data["placeId"];
+                            return Text(
+                              _address ??
+                                  S.of(context)?.unnamedPlace ??
+                                  'Unnamed place',
+                              style: TextStyle(fontSize: 18),
+                            );
+                          },
+                        ),
                       ),
-                      builder: (context, data) {
-                        _address = data["address"];
-                        _placeId = data["placeId"];
-                        return Text(
-                          _address ??
-                              S.of(context)?.unnamedPlace ??
-                              'Unnamed place',
-                          style: TextStyle(fontSize: 18),
-                        );
-                      },
-                    ),
+                      /*Spacer(),
+                      FloatingActionButton(
+                        onPressed: () {
+                          Navigator.of(context).pop({
+                            'location': LocationResult(
+                              latLng: locationProvider.lastIdleLocation,
+                              address: _address,
+                              placeId: _placeId,
+                            )
+                          });
+                        },
+                        child: widget.resultCardConfirmIcon ??
+                            Icon(Icons.arrow_forward),
+                      ),*/
+                    ],
                   ),
-                  Spacer(),
-                  FloatingActionButton(
-                    onPressed: () {
-                      Navigator.of(context).pop({
-                        'location': LocationResult(
-                          latLng: locationProvider.lastIdleLocation,
-                          address: _address,
-                          placeId: _placeId,
-                        )
-                      });
-                    },
-                    child: widget.resultCardConfirmIcon ??
-                        Icon(Icons.arrow_forward),
+                  Padding(
+                    padding: EdgeInsets.only(top: 8),
+                    child: HorizontalExpandedChild(
+                      child: ButtonRounded(
+                        child: Text(
+                          'CONFIRMAR UBICACIÓN',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop({
+                            'location': LocationResult(
+                              latLng: locationProvider.lastIdleLocation,
+                              address: _address,
+                              placeId: _placeId,
+                            )
+                          });
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -465,7 +524,7 @@ class _MapFabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topRight,
-      margin: const EdgeInsets.only(top: kToolbarHeight + 24, right: 8),
+      margin: const EdgeInsets.only(right: 8, top: 110),
       child: Column(
         children: <Widget>[
           if (layersButtonEnabled)

@@ -69,7 +69,7 @@ class SearchInputState extends State<SearchInput> {
                 ? Colors.black54
                 : Colors.white,
           ),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 256),
+      padding: EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: <Widget>[
           Icon(Icons.search),
@@ -78,9 +78,7 @@ class SearchInputState extends State<SearchInput> {
             child: TextField(
               controller: editController,
               decoration: InputDecoration(
-                hintText: widget.hintText ??
-                    S.of(context)?.search_place ??
-                    'Search place',
+                hintText: 'xD2',
                 border: InputBorder.none,
               ),
               onChanged: (value) {
