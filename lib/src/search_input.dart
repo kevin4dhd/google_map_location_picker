@@ -69,7 +69,7 @@ class SearchInputState extends State<SearchInput> {
                 ? Colors.black54
                 : Colors.white,
           ),
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 32),
       child: Row(
         children: <Widget>[
           Icon(Icons.search),
