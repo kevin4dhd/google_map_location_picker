@@ -98,8 +98,8 @@ class MapPickerState extends State<MapPicker> {
   Future<void> _initCurrentLocation() async {
     Position currentPosition;
     try {
-      currentPosition =
-          await getCurrentPosition(desiredAccuracy: widget.desiredAccuracy);
+      currentPosition = await Geolocator.getCurrentPosition(
+          desiredAccuracy: widget.desiredAccuracy);
       d("position = $currentPosition");
 
       setState(() => _currentPosition = currentPosition);
@@ -383,7 +383,7 @@ class MapPickerState extends State<MapPicker> {
   var dialogOpen;
 
   Future _checkGeolocationPermission() async {
-    final geolocationStatus = await checkPermission();
+    final geolocationStatus = await Geolocator.checkPermission();
     d("geolocationStatus = $geolocationStatus");
 
     if (geolocationStatus == LocationPermission.denied && dialogOpen == null) {
@@ -458,7 +458,7 @@ class MapPickerState extends State<MapPicker> {
                 child: Text(S.of(context)?.ok ?? 'Ok'),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
-                  openAppSettings();
+                  Geolocator.openAppSettings();
                   dialogOpen = null;
                 },
               ),
@@ -471,7 +471,7 @@ class MapPickerState extends State<MapPicker> {
 
   // TODO: 9/12/2020 this is no longer needed, remove in the next release
   Future _checkGps() async {
-    if (!(await isLocationServiceEnabled())) {
+    if (!(await Geolocator.isLocationServiceEnabled())) {
       if (Theme.of(context).platform == TargetPlatform.android) {
         showDialog(
           context: context,
