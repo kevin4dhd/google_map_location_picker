@@ -356,7 +356,12 @@ class MapPickerState extends State<MapPicker> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.place, size: 56),
+            Image.asset(
+              "lib/assets/images/icons/marker.png",
+              width: 40,
+              height: 40,
+            ),
+            /*Icon(Icons.place, size: 56),
             Container(
               decoration: ShapeDecoration(
                 shadows: [
@@ -372,7 +377,7 @@ class MapPickerState extends State<MapPicker> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             SizedBox(height: 56),
           ],
         ),

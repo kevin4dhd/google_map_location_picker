@@ -37,6 +37,8 @@ flutter:
   # The 'pluginClass' and Android 'package' identifiers should not ordinarily
   # be modified. They are used by the tooling to maintain consistency when
   # adding or updating assets for this project.
+  assets:
+    - lib/assets/images/icons/marker.png
   plugin:
     platforms:
       # This plugin project was generated without specifying any
