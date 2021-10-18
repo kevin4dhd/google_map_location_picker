@@ -174,7 +174,7 @@ class MapPickerState extends State<MapPicker> {
               Navigator.pop(context);
             },
             child: Icon(
-              Icons.arrow_back,
+              Icons.arrow_back_rounded,
               size: 28,
               color: Colors.white,
             ),
@@ -306,7 +306,11 @@ class MapPickerState extends State<MapPicker> {
                       child: ButtonRounded(
                         child: Text(
                           'CONFIRMAR UBICACIÓN',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: "UbuntuMedium",
+                            letterSpacing: 0.15,
+                          ),
                         ),
                         onPressed: () {
                           Navigator.of(context).pop({
