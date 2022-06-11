@@ -261,7 +261,7 @@ class MapPickerState extends State<MapPicker> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Flexible(
+                      /*Flexible(
                         flex: 20,
                         child: FutureLoadingBuilder<Map<String, String>>(
                           future: getAddress(locationProvider.lastIdleLocation),
@@ -284,7 +284,7 @@ class MapPickerState extends State<MapPicker> {
                           },
                         ),
                       ),
-                      /*Spacer(),
+                      Spacer(),
                       FloatingActionButton(
                         onPressed: () {
                           Navigator.of(context).pop({
